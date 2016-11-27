@@ -1,0 +1,1 @@
+#TODO https://blog.docker.com/2016/09/docker-golang/
