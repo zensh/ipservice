@@ -25,7 +25,23 @@ go build -o ipservice app.go
 ./ipservice --data=./data/17monipdb.dat --port=3000
 ```
 
-### Docker
+### Docker (11.2 MB)
+
+Build docker image with https://github.com/hesion3d/slimage:
+```sh
+cp docker.sh path-to-slimage/ipservice.sh
+cd path-to-slimage
+./run.sh -f ipservice.sh -l basic -n ipservice
+```
+
+Please edit docker.sh yourself.
+
+Run image:
+```sh
+docker images
+docker run -p 8080:8080 ipservice
+curl 127.0.0.1:8080/json/8.8.8.8
+```
 
 ## API
 
