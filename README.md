@@ -3,6 +3,12 @@ IP Service
 基于 https://github.com/teambition/gear  Go Web 框架和 http://www.ipip.net/ IP 数据库实现的 IP 查询服务。
 
 ## 运行
+
+### 从 docker 官方仓库抓取 image 运行
+```sh
+docker run --rm -p 8080:8080 zensh/ipservice
+```
+
 ### 从源码运行
 
 ```bash
@@ -20,18 +26,18 @@ go build -o ipservice app.go
 # 未提供参数显示帮助信息
 ./ipservice
 # 指定 IP 数据库
-./ipservice --data=./data/17monipdb.dat
+./ipservice -data ./data/17monipdb.dat
 # 指定 IP 数据库并指定监听端口
-./ipservice --data=./data/17monipdb.dat --port=3000
+./ipservice -data ./data/17monipdb.dat -port 3000
 ```
 
-### Docker (11.2 MB)
+### Docker (15.01 MB)
 
 Build docker image with https://github.com/hesion3d/slimage:
 ```sh
 cp docker.sh path-to-slimage/ipservice.sh
 cd path-to-slimage
-./run.sh -f ipservice.sh -l basic -n ipservice
+./run.sh -f ipservice.sh -l extra -n ipservice
 ```
 
 Please edit docker.sh yourself.
@@ -39,7 +45,7 @@ Please edit docker.sh yourself.
 Run image:
 ```sh
 docker images
-docker run -p 8080:8080 ipservice
+docker run --rm -p 8080:8080 ipservice
 curl 127.0.0.1:8080/json/8.8.8.8
 ```
 

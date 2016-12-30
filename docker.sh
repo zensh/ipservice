@@ -20,4 +20,4 @@ DOCKERIZED_FILES=(${GOPATH}/bin/ipservice:${TARGET_DIR}/ipservice ${GOPATH}/src/
 
 # entrypoint for Dockerfile. here variable ${TARGET_DIR} is the env when we building, but not running env.
 # you can add prefix '\' to use a running env. ex: \$PATH
-ENTRYPOINT="${TARGET_DIR}/ipservice --data=${TARGET_DIR}/17monipdb.dat"
+ENTRYPOINT="${TARGET_DIR}/ipservice -data ${TARGET_DIR}/17monipdb.dat"
