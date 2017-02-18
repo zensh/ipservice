@@ -1,24 +1,16 @@
-package main
+package pkg
 
 import (
 	"encoding/json"
-	"flag"
 	"net"
 	"net/http"
 	"os"
-	"regexp"
 	"time"
 
 	"github.com/teambition/gear"
 	"github.com/teambition/gear/logging"
 	"github.com/teambition/gear/middleware/favicon"
 	"github.com/wangtuanjie/ip17mon"
-)
-
-var (
-	portReg  = regexp.MustCompile(`^\d+$`)
-	port     = flag.String("port", "8080", `Server port.`)
-	dataPath = flag.String("data", "", "IP data file path.")
 )
 
 type result struct {
@@ -57,7 +49,8 @@ func jsonAPI(ctx *gear.Context) error {
 	return ctx.JSONP(res.Status, callback, res)
 }
 
-func app(port, dataPath string) *gear.ServerListener {
+// New return a App instance
+func New(dataPath string) *gear.App {
 	// init IP db
 	err := ip17mon.Init(dataPath)
 	if err != nil {
@@ -66,7 +59,6 @@ func app(port, dataPath string) *gear.ServerListener {
 
 	// create app
 	app := gear.New()
-
 	// add favicon middleware
 	app.Use(favicon.NewWithIco(faviconData))
 
@@ -95,20 +87,5 @@ func app(port, dataPath string) *gear.ServerListener {
 	})
 	app.UseHandler(router)
 
-	// start app
-	logging.Info("IP Service start " + port)
-	return app.Start(port)
-}
-
-func main() {
-	flag.Parse()
-	if portReg.MatchString(*port) {
-		*port = ":" + *port
-	}
-	if *port == "" || *dataPath == "" {
-		flag.PrintDefaults()
-		os.Exit(1)
-	}
-	srv := app(*port, *dataPath)
-	srv.Wait()
+	return app
 }

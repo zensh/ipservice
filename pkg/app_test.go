@@ -1,4 +1,4 @@
-package main
+package pkg
 
 import (
 	"encoding/json"
@@ -14,8 +14,9 @@ import (
 )
 
 func TestGearApp(t *testing.T) {
-	srv := app(":8080", "./data/17monipdb.dat")
-	defer srv.Close()
+	app := New("../data/17monipdb.dat")
+	app.Start(":8080")
+	defer app.Close()
 
 	t.Run("home", func(t *testing.T) {
 		assert := assert.New(t)

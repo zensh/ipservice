@@ -14,14 +14,14 @@ docker run --rm -p 8080:8080 zensh/ipservice
 ```bash
 go get github.com/zensh/ipservice
 cd path_to_ipservice
-go run app.go --data=./data/17monipdb.dat
+go run main.go --data ./data/17monipdb.dat
 ```
 
 ### 编译可执行文件并运行
 
 ```bash
 # 编译成可运行的二进制文件：ipservice
-go build -o ipservice app.go
+go build -o ipservice main.go
 
 # 未提供参数显示帮助信息
 ./ipservice
@@ -33,19 +33,13 @@ go build -o ipservice app.go
 
 ### Docker (15.01 MB)
 
-Build docker image with https://github.com/hesion3d/slimage:
 ```sh
-cp docker.sh path-to-slimage/ipservice.sh
-cd path-to-slimage
-./run.sh -f ipservice.sh -l extra -n ipservice
+make docker
 ```
 
-Please edit docker.sh yourself.
-
-Run image:
+Try it:
 ```sh
-docker images
-docker run --rm -p 8080:8080 ipservice
+make run
 curl 127.0.0.1:8080/json/8.8.8.8
 ```
 
@@ -66,23 +60,4 @@ curl 127.0.0.1:8080/json/8.8.8.8
 curl 127.0.0.1:8080/json/8.8.8.8?callback=readIP
 # 返回 JSONP 数据
 /**/ typeof readIP === "function" && readIP({"IP":"8.8.8.8","Status":200,"Message":"","Data":{"Country":"GOOGLE","Region":"GOOGLE","City":"N/A","Isp":"N/A"}});
-```
-
-## Bench
-
-Environment: MacBook Pro, 2.4 GHz Intel Core i5, 8 GB 1600 MHz DDR3
-
-Start service: `./ipservice --data=./data/17monipdb.dat`
-
-Result: **41132.68 req/sec**
-```bash
-wrk 'http://localhost:8080/json/8.8.8.8' -d 60 -c 100 -t 4
-Running 1m test @ http://localhost:8080/json/8.8.8.8
-  4 threads and 100 connections
-  Thread Stats   Avg      Stdev     Max   +/- Stdev
-    Latency     3.51ms    6.45ms 199.21ms   95.37%
-    Req/Sec    10.34k     1.14k   14.33k    86.12%
-  2470564 requests in 1.00m, 558.40MB read
-Requests/sec:  41132.68
-Transfer/sec:      9.30MB
 ```
