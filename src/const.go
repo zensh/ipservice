@@ -1,4 +1,4 @@
-package pkg
+package src
 
 const indexHTML = `
 <h1>IP Service</h1>

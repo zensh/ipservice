@@ -6,7 +6,7 @@ import (
 	"regexp"
 
 	"github.com/teambition/gear/logging"
-	"github.com/zensh/ipservice/pkg"
+	"github.com/zensh/ipservice/src"
 )
 
 var (
@@ -24,7 +24,7 @@ func main() {
 		flag.PrintDefaults()
 		os.Exit(1)
 	}
-	app := pkg.New(*dataPath)
+	app := src.New(*dataPath)
 	// start app
 	logging.Info("IP Service start " + *port)
 	app.Listen(*port)
