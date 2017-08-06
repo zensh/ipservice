@@ -1,11 +1,8 @@
 package src
 
 import (
-	"encoding/json"
 	"net"
 	"net/http"
-	"os"
-	"time"
 
 	"github.com/teambition/gear"
 	"github.com/teambition/gear/logging"
@@ -33,7 +30,7 @@ func jsonAPI(ctx *gear.Context) error {
 	}
 
 	if ip == nil {
-		res = result{IP: "", Status: http.StatusBadRequest, Message: "Invalid IP format"}
+		res = result{IP: "", Status: http.StatusBadRequest, Message: "invalid IP format"}
 	} else {
 		loc, err := ip17mon.Find(ip.String())
 		if err != nil {
@@ -61,21 +58,8 @@ func New(dataPath string) *gear.App {
 	app := gear.New()
 	// add favicon middleware
 	app.Use(favicon.NewWithIco(faviconData))
-
 	// add logger middleware
-	logger := logging.New(os.Stdout)
-	logger.SetLogConsume(func(log logging.Log, _ *gear.Context) {
-		now := time.Now()
-		delete(log, "Start")
-		delete(log, "Type")
-		switch res, err := json.Marshal(log); err == nil {
-		case true:
-			logger.Output(now, logging.InfoLevel, string(res))
-		default:
-			logger.Output(now, logging.WarningLevel, err.Error())
-		}
-	})
-	app.UseHandler(logger)
+	app.UseHandler(logging.Default())
 
 	// add router middleware
 	router := gear.NewRouter()
